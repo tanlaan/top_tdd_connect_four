@@ -3,9 +3,7 @@
 # Connect Four Game Implementation Class
 class ConnectFour
   def initialize
-    board_height = 6
-    board_width  = 7
-    @board = Array.new(board_width) { Array.new(board_height) }
+    @board = []
   end
 
   def play
