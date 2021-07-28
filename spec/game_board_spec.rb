@@ -3,8 +3,9 @@
 require_relative '../lib/game_board'
 
 RSpec.describe GameBoard do
-  subject(:start_board) { described_class.new }
   context 'creates a board on initialization' do
+    subject(:start_board) { described_class.new }
+
     let(:inner_board) { start_board.instance_variable_get(:@board) }
 
     it 'has a width of 7' do
@@ -28,16 +29,26 @@ RSpec.describe GameBoard do
     subject(:move_board) { described_class.new }
     let(:inner_board) { move_board.instance_variable_get(:@board) }
 
-    it 'puts a token to the bottom of the row' do
-      token = '*'
-      move_board.move(0, token)
-      expect(inner_board[0][5]).to eq(token)
+    context 'when column is empty' do
+      it 'puts a token to the bottom of the row' do
+        token = '*'
+        move_board.move(0, token)
+        expect(inner_board[0][5]).to eq(token)
+      end
+
+      it 'leaves the second from the bottom empty' do
+        token = '*'
+        move_board.move(0, token)
+        expect(inner_board[0][4]).to be_nil
+      end
     end
 
-    it 'stacks tokens if column already has some' do
-      token = '*'
-      2.times { move_board.move(0, token) }
-      expect(inner_board[0][4]).to eq(token)
+    context 'when column already has a token' do
+      it 'stacks tokens' do
+        token = '*'
+        2.times { move_board.move(0, token) }
+        expect(inner_board[0][4]).to eq(token)
+      end
     end
   end
 
@@ -64,6 +75,70 @@ RSpec.describe GameBoard do
         6.times { valid_move_board.move(0, '*') }
         result = valid_move_board.valid_move?(0)
         expect(result).to be false
+      end
+    end
+  end
+
+  context 'can return a pretty print string' do
+    subject(:print_board) { described_class.new }
+
+    context 'when the board is empty' do
+      it 'returns an empty board' do
+        board_check = <<~BOARD
+           0 1 2 3 4 5 6
+          ┏━┳━┳━┳━┳━┳━┳━┓
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┗━┻━┻━┻━┻━┻━┻━┛
+        BOARD
+        expect(print_board.to_s).to eq(board_check)
+      end
+    end
+    context 'when the board has a token' do
+
+      it 'returns a correct board' do
+        white_token = '○'
+        board_check = <<~BOARD
+           0 1 2 3 4 5 6
+          ┏━┳━┳━┳━┳━┳━┳━┓
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃○┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┗━┻━┻━┻━┻━┻━┻━┛
+        BOARD
+        print_board.move(0, white_token)
+        expect(print_board.to_s).to eq(board_check)
+      end
+    end
+    context 'when the board has several tokens' do
+      it 'returns a correct board' do
+        white_token = '○'
+        black_token = '●'
+        board_check = <<~BOARD
+           0 1 2 3 4 5 6
+          ┏━┳━┳━┳━┳━┳━┳━┓
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃
+          ┃ ┃ ┃○┃ ┃ ┃ ┃ ┃
+          ┃ ┃●┃●┃ ┃ ┃ ┃ ┃
+          ┃○┃●┃○┃ ┃ ┃ ┃ ┃
+          ┗━┻━┻━┻━┻━┻━┻━┛
+        BOARD
+        print_board.move(0, white_token)
+        print_board.move(1, black_token)
+        print_board.move(2, white_token)
+        print_board.move(2, black_token)
+        print_board.move(2, white_token)
+        print_board.move(1, black_token)
+        expect(print_board.to_s).to eq(board_check)
       end
     end
   end

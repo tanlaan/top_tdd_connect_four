@@ -2,7 +2,7 @@
 
 # Connect Four Gameboard Class
 class GameBoard
-  attr_reader :height, :width
+  attr_reader :height, :width, :board
 
   def initialize
     @height = 6
@@ -28,5 +28,33 @@ class GameBoard
 
   def exist?
     true
+  end
+
+  def to_s
+    board_top + board_middle + board_bottom
+  end
+
+  def board_top
+    <<~TOP
+       0 1 2 3 4 5 6
+      ┏━┳━┳━┳━┳━┳━┳━┓
+    TOP
+  end
+
+  def board_middle
+    middle = ''
+    @board.transpose.each do |row|
+      row.each do |column|
+        middle += column.nil? ? '┃ ' : "┃#{column}"
+      end
+      middle += "┃\n"
+    end
+    middle
+  end
+
+  def board_bottom
+    <<~BOTTOM
+      ┗━┻━┻━┻━┻━┻━┻━┛
+    BOTTOM
   end
 end
