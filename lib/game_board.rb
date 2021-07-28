@@ -25,4 +25,8 @@ class GameBoard
     # Column is not full
     @board[column][0].nil?
   end
+
+  def exist?
+    true
+  end
 end

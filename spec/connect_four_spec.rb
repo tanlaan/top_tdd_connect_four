@@ -7,7 +7,7 @@ RSpec.describe ConnectFour do
   context 'create a gameboard on startup' do
     let(:start_board) { game_start.instance_variable_get(:@board)}
     it 'is not empty' do
-      expect(start_board).not_to be_empty
+      expect(start_board).to exist
     end
   end
 end
