@@ -77,10 +77,28 @@ RSpec.describe GameBoard do
         expect(result).to be false
       end
     end
+    
+    context 'when the column is out of range' do
+      context 'negative numbers' do
+        it 'return false' do
+          result = valid_move_board.valid_move?(-1)
+          expect(result).to be false
+        end
+      end
+      context 'equal to @width' do
+        it 'return false' do
+          width = valid_move_board.instance_variable_get(:@width)
+          result = valid_move_board.valid_move?(width)
+          expect(result).to be false
+        end
+      end
+    end
   end
 
   context 'can return a pretty print string' do
     subject(:print_board) { described_class.new }
+    let(:white_token) { '○' } 
+    let(:black_token) { '●' }
 
     context 'when the board is empty' do
       it 'returns an empty board' do
@@ -99,9 +117,7 @@ RSpec.describe GameBoard do
       end
     end
     context 'when the board has a token' do
-
       it 'returns a correct board' do
-        white_token = '○'
         board_check = <<~BOARD
            0 1 2 3 4 5 6
           ┏━┳━┳━┳━┳━┳━┳━┓
@@ -119,8 +135,6 @@ RSpec.describe GameBoard do
     end
     context 'when the board has several tokens' do
       it 'returns a correct board' do
-        white_token = '○'
-        black_token = '●'
         board_check = <<~BOARD
            0 1 2 3 4 5 6
           ┏━┳━┳━┳━┳━┳━┳━┓
