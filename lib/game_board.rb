@@ -22,8 +22,11 @@ class GameBoard
   end
 
   def valid_move?(column)
-    # Column is not full
-    @board[column][0].nil?
+    # 0..@width exclusive
+    column >= 0 &&
+      column < @width &&
+      # Column is not full
+      @board[column][0].nil?
   end
 
   def exist?
@@ -31,7 +34,9 @@ class GameBoard
   end
 
   def to_s
-    board_top + board_middle + board_bottom
+    board_top +
+      board_middle +
+      board_bottom
   end
 
   def board_top
