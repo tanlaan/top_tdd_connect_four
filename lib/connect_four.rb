@@ -6,8 +6,8 @@ require_relative '../lib/game_board'
 class ConnectFour
   def initialize
     @board = GameBoard.new
-    @white_token = '○'
-    @black_token = '●'
+    @red_token = '🔴'
+    @black_token = '⬤'
   end
 
   def play
