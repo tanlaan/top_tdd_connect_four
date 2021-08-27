@@ -7,7 +7,7 @@ class ConnectFour
   def initialize
     @board = GameBoard.new
     @red_token = '🔴'
-    @black_token = '⬤'
+    @black_token = '⚫'
   end
 
   def play
