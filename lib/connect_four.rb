@@ -11,6 +11,53 @@ class ConnectFour
   end
 
   def play
-    # This in theory should just be a loop of various functions
+    # initialize game state
+    # for now, do nothing
+    # game loop
+    # win state message
+  end
+
+  def winner?
+    # booleanize the return value of winner
+    !!winner
+  end
+
+  def winner
+    # return winning token
+    #
+    # begin search at bottom row
+    (0...@board.width).each do |x|
+      (0...@board.height).reverse_each do |y|
+        token = winner_search(x, y)
+        return token if token
+      end
+    end
+
+    nil
+  end
+
+  def winner_search(x, y)
+    # Looks for matching tokens in surrounding positions
+    # Returns token if matching token is row of four
+    return false if @board.board[x][y].nil?
+
+    search_area = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0]]
+    search_area.each do |delta_x, delta_y|
+      return @board.board[x][y] if row_of_n?(4, x, y, delta_x, delta_y)
+    end
+
+    nil
+  end
+
+  def row_of_n?(row_length, x, y, delta_x, delta_y)
+    # This feels kind of grungy.
+    # What would be a better way to iterate/check these values
+    token = @board.board[x][y]
+    (row_length - 1).times do
+      x += delta_x
+      y += delta_y
+      return false if token != @board.board[x][y]
+    end
+    true
   end
 end
