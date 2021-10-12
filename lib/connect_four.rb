@@ -15,6 +15,26 @@ class ConnectFour
     # for now, do nothing
     # game loop
     # win state message
+    move_counter = 1
+    until winner?
+      move_counter.even? ? computer_move : human_move
+      print @board
+      move_counter += 1
+    end
+    print "#{winner} won the game in #{move_counter} moves!"
+  end
+
+  def human_move
+    computer_move('X')
+  end
+
+  def computer_move(token = 'O')
+    position = 0
+    loop do
+      position = Random.rand(@board.width)
+      break if @board.valid_move?(position)
+    end
+    @board.move(position, token)
   end
 
   def winner?
@@ -56,6 +76,7 @@ class ConnectFour
     (row_length - 1).times do
       x += delta_x
       y += delta_y
+      return false if x >= @board.width || y >= @board.height || x.negative? || y.negative?
       return false if token != @board.board[x][y]
     end
     true
