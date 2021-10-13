@@ -42,7 +42,7 @@ class GameBoard
   def board_top
     <<~TOP
        0 1 2 3 4 5 6
-      ┏━┳━┳━┳━┳━┳━┳━┓
+      ┏━━┳━━┳━━┳━━┳━━┳━━┳━━┓
     TOP
   end
 
@@ -50,7 +50,7 @@ class GameBoard
     middle = ''
     @board.transpose.each do |row|
       row.each do |column|
-        middle += column.nil? ? '┃ ' : "┃#{column}"
+        middle += column.nil? ? '┃  ' : "┃#{column}"
       end
       middle += "┃\n"
     end
@@ -59,7 +59,7 @@ class GameBoard
 
   def board_bottom
     <<~BOTTOM
-      ┗━┻━┻━┻━┻━┻━┻━┛
+      ┗━━┻━━┻━━┻━━┻━━┻━━┻━━┛
     BOTTOM
   end
 end
