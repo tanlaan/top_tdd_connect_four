@@ -25,10 +25,10 @@ class ConnectFour
   end
 
   def human_move
-    computer_move('X')
+    computer_move(@red_token)
   end
 
-  def computer_move(token = 'O')
+  def computer_move(token = @black_token)
     position = 0
     loop do
       position = Random.rand(@board.width)
