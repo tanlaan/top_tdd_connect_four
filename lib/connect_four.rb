@@ -15,6 +15,8 @@ class ConnectFour
     # for now, do nothing
     # game loop
     # win state message
+    @board = GameBoard.new
+    print @board
     move_counter = 1
     until winner?
       move_counter.even? ? computer_move : human_move
@@ -25,7 +27,25 @@ class ConnectFour
   end
 
   def human_move
-    computer_move(@red_token)
+    # Ask for move until valid move given
+    position = 0
+    loop do
+      position = get_user_move
+      break if @board.valid_move?(position)
+
+      invalid_move_prompt
+    end
+    @board.move(position, @red_token)
+    # computer_move(@red_token)
+  end
+
+  def get_user_move
+    p 'Where do you want to play?'
+    gets.chomp.to_i
+  end
+
+  def invalid_move_prompt
+    p "Invalid move, must be between 0 and #{@board.width - 1}"
   end
 
   def computer_move(token = @black_token)
